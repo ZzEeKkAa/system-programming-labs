@@ -176,7 +176,7 @@ func main() {
 
 	var Entries []Entry
 
-	f, err := os.Open("slar.php")
+	f, err := os.Open("request.php")
 	if err != nil {
 		log.Error(err)
 	}

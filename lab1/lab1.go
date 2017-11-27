@@ -15,9 +15,10 @@ import (
 )
 
 var (
-	inFileName = flag.String("filename", "./example.txt", "path to file =)")
-	//inFileName  = flag.String("in_filename", "./example_light.txt", "path to file =)")
-	outFileName = flag.String("out_filename", "./sets.txt", "path to file =)")
+	//inFileName = flag.String("filename", "./example.txt", "path to file =)")
+	inFileName  = flag.String("in_filename", "./example_light.txt", "path to file =)")
+	//outFileName = flag.String("out_filename", "./sets.txt", "path to file =)")
+	outFileName = flag.String("out_filename", "./sets_light.txt", "path to file =)")
 	lineQueue   chan []byte
 	wordQueue   chan []byte
 	wg          sync.WaitGroup
