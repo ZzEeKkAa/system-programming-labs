@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	inFileName  = flag.String("in_filename", "./sm6.txt", "path to file =)")
+	inFileName  = flag.String("in_filename", "./sm71.txt", "path to file =)")
 	inFileName2 = flag.String("in_filename2", "./sm7.txt", "path to file =)")
 	outFileName = flag.String("out_filename", "./sm8.txt", "path to file =)")
 )
@@ -146,9 +146,11 @@ func (m *StateMachine) Read(r io.Reader) {
 		var (
 			u int
 			e Edge
+			c byte
 		)
 
-		_, err := fmt.Fscanf(r, "%d %d %d", &u, &e.Symbol, &e.V)
+		_, err := fmt.Fscanf(r, "%d %c %d", &u, &c, &e.V)
+		e.Symbol = int(c) - int('a')
 		if err == io.EOF {
 			break
 		}
@@ -173,7 +175,7 @@ func (m *StateMachine) Write(w io.Writer) {
 	fmt.Fprintln(w)
 	for u, edges := range m.Graph {
 		for _, edge := range edges {
-			fmt.Fprintln(w, u, edge.Symbol, edge.V)
+			fmt.Fprintln(w, u, string([]byte{byte(edge.Symbol) + 'a'}), edge.V)
 		}
 	}
 }

@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	//inFileName  = flag.String("filename", "./example.txt", "path to file =)")
-	inFileName  = flag.String("in_filename", "./example_light.txt", "path to file =)")
+	inFileName = flag.String("filename", "./example.txt", "path to file =)")
+	//inFileName  = flag.String("in_filename", "./example_light.txt", "path to file =)")
 	outFileName = flag.String("out_filename", "./sets.txt", "path to file =)")
 	lineQueue   chan []byte
 	wordQueue   chan []byte
@@ -153,18 +153,20 @@ func main() {
 	var build func([]int)
 
 	build = func(sg []int) {
+		var bigger = false
 		from := sg[len(sg)-1]
 		for _, to := range g[from] {
 			if to <= from {
 				continue
 			}
 			if check(to, sg) {
+				bigger = true
 				sg = append(sg, to)
 				build(sg)
 				sg = sg[:len(sg)-1]
 			}
 		}
-		if len(sg) > 1 {
+		if len(sg) > 1 && !bigger {
 			var w []string
 			for _, v := range sg {
 				w = append(w, string(words[v]))

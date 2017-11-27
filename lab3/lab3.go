@@ -176,7 +176,7 @@ func main() {
 
 	var Entries []Entry
 
-	f, err := os.Open("request.php")
+	f, err := os.Open("slar.php")
 	if err != nil {
 		log.Error(err)
 	}
@@ -222,7 +222,7 @@ func main() {
 	var (
 		lPos   int
 		colors = map[EntryType]*color.Color{
-			UNKNOWN:         color.New(color.FgBlack),
+			UNKNOWN:         color.New(color.FgBlack, color.BgWhite),
 			COMMENT:         color.New(color.FgWhite),
 			STRING_CONSTANT: color.New(color.FgHiRed),
 			CONSTANT:        color.New(color.FgWhite),
