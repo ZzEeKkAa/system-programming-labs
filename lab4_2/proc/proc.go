@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"net"
 	"os"
+	"strconv"
 )
 
 var (
@@ -21,11 +23,45 @@ func main() {
 	fConn, err := net.DialTCP("tcp", nil, fTcpAddr)
 	checkError(err)
 
-	_, err = conn.Write([]byte("HEAD / HTTP/1.0\r\n\r\n"))
+	defer fConn.Close()
+
+	gTcpAddr, err := net.ResolveTCPAddr("tcp4", *gServer)
 	checkError(err)
-	result, err := ioutil.ReadAll(conn)
+	gConn, err := net.DialTCP("tcp", nil, gTcpAddr)
 	checkError(err)
-	fmt.Println(string(result))
+	defer gConn.Close()
+
+	fmt.Println("Put two boolean in string form (example: true false):")
+
+	var a, b bool
+	fmt.Scanf("%t %t\n", &a, &b)
+
+	fmt.Printf("Your input: %t %t\n", a, b)
+
+	fmt.Println("Writing f")
+	fConn.Write([]byte(fmt.Sprintf("%t", a)))
+
+	fmt.Println("Writing g")
+	gConn.Write([]byte(fmt.Sprintf("%t", b)))
+
+	fmt.Println("Getting answer f")
+	fRes, err := ioutil.ReadAll(fConn)
+	checkError(err)
+
+	fmt.Println("Getting answer g")
+	gRes, err := ioutil.ReadAll(gConn)
+	checkError(err)
+
+	aa, err := strconv.ParseBool(string(fRes))
+	checkError(err)
+	bb, err := strconv.ParseBool(string(gRes))
+	checkError(err)
+
+	fmt.Printf("f(%t) && g(%t)=%t\n", a, b, aa && bb)
+
+	fmt.Print("Press 'Enter' to continue...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
 	os.Exit(0)
 }
 
